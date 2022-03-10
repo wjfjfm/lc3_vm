@@ -78,3 +78,56 @@ enum
     TRAP_HALT = 0x25   /* halt the program */
 };
 
+
+/* Memory Storage */
+/* 65536 locations */
+uint16_t memory[UINT16_MAX];
+
+/* Register Storage */
+uint16_t reg[R_COUNT];
+
+
+/* Sign Extend */
+uint16_t sign_extend(uint16_t x, int bit_count)
+{
+    // TODO
+}
+
+
+int main(int argc, const char* argv[]) {
+    /* Load Arguments */
+    if (argc < 2)
+    {
+        /* show usage string */
+        printf("lc3 [image-file1] ...\n");
+        exit(2);
+    }
+
+    for (int j=1; j<argc; ++j)
+    {
+        if (!read_image(argv[j]))
+        {
+            printf("failed to lead image: %s\n", argv[j]);
+            exit(1);
+        }
+    }
+
+    /* Setup */
+    signal(SIGINT, handle_interrupt);
+    disable_input_buffering();
+
+    /* since exactly one condition flag should be set at any give time, set the Z flag*/
+    reg[R_COND] = FL_ZRO;
+
+    /* set the PC to starting position */
+    /* 0x3000 is the default */
+    enum { PC_START = 0x3000 };
+    reg[R_PC] = PC_START;
+
+    int running = 1;
+    while (running) {
+        
+    }
+}
+
+
